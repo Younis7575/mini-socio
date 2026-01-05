@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mini_social/presentation/pages/auth/login_page.dart';
 import 'package:mini_social/presentation/pages/feed/feed_page.dart';
 import 'package:mini_social/presentation/pages/post/create_post_page.dart';
+import 'package:mini_social/presentation/pages/profile/profile_page.dart';
 
 abstract class AppPages {
   static const initial = '/login';
@@ -20,5 +21,9 @@ abstract class AppPages {
       name: '/create-post',
       page: () => CreatePostPage(),
     ),
+  GetPage(
+    name: '/profile',
+    page: () => ProfilePage(),
+  ),
   ];
 }

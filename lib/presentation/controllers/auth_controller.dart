@@ -59,6 +59,36 @@ void _setupAuthListener() {
   }
  
 
+// Add this method inside your AuthController class
+Future<void> updateDisplayName(String newName) async {
+  try {
+    if (newName.trim().isEmpty) return;
+    isLoading.value = true;
+
+    final user = currentUser.value;
+    if (user != null) {
+      // 1. Update Firestore [cite: 12]
+      await _authRepository.updateUserDisplayName(user.uid, newName);
+
+      // 2. Update local state
+      currentUser.value = UserModel(
+        uid: user.uid,
+        displayName: newName,
+        photoUrl: user.photoUrl,
+        email: user.email,
+        createdAt: user.createdAt,
+      );
+      
+      Get.snackbar('Success', 'Display name updated successfully');
+    }
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to update name: $e');
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+
 Future<void> signInWithGoogle() async {
   try {
     isLoading.value = true;
@@ -84,6 +114,8 @@ Future<void> signInWithGoogle() async {
     isLoading.value = false;
   }
 }
+
+
 
   Future<void> signOut() async {
     try {

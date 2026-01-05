@@ -2,17 +2,18 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mini_social/data/models/comment_model.dart';
 import 'package:mini_social/presentation/controllers/auth_controller.dart';
 import 'package:mini_social/data/models/post_model.dart';
 import 'package:mini_social/data/repositories/post_repository.dart';
 
 class PostController extends GetxController {
   final PostRepository _postRepository;
-  
+  final TextEditingController commentController = TextEditingController();
   // Using a getter to ensure we always have the latest AuthController instance
   AuthController get _authController => Get.find<AuthController>();
 
-  PostController({required PostRepository postRepository})
+PostController({required PostRepository postRepository})
       : _postRepository = postRepository;
 
   final RxList<PostModel> posts = <PostModel>[].obs;
@@ -25,6 +26,20 @@ class PostController extends GetxController {
     super.onInit();
     _loadPosts();
   }
+
+  // Add these to your existing PostController class
+final RxList<CommentModel> currentPostComments = <CommentModel>[].obs;
+
+// Rename 'listenToComments' to 'loadComments' to match your Detail Page
+  void loadComments(String postId) {
+    // Clear previous comments when switching posts
+    currentPostComments.clear();
+    
+    _postRepository.getCommentsStream(postId).listen((comments) {
+      currentPostComments.assignAll(comments);
+    });
+  }
+
 
   void _loadPosts() {
     _postRepository.getPostsStream().listen((postEntities) {
@@ -44,6 +59,32 @@ class PostController extends GetxController {
       posts.assignAll(postModels);
     });
   }
+
+
+
+Future<void> submitComment(String postId) async {
+  if (commentController.text.trim().isEmpty) return;
+
+  try {
+    final user = _authController.currentUser.value;
+    if (user == null) return;
+
+    final comment = CommentModel(
+      id: '',
+      userId: user.uid,
+      userName: user.displayName,
+      text: commentController.text.trim(),
+      timestamp: DateTime.now(),
+    );
+
+    await _postRepository.addComment(postId, comment);
+    commentController.clear();
+    Get.back(); // Close the bottom sheet
+    Get.snackbar('Success', 'Comment posted!');
+  } catch (e) {
+    Get.snackbar('Error', 'Could not post comment');
+  }
+}
 
 Future<void> createPost(File image, String? caption) async {
   try {

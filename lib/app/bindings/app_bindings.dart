@@ -8,24 +8,32 @@ import 'package:mini_social/presentation/controllers/auth_controller.dart';
 import 'package:mini_social/presentation/controllers/post_controller.dart';
 
 class AppBindings extends Bindings {
-// lib/app/bindings/app_bindings.dart
-@override
-void dependencies() {
-  Get.lazyPut(() => FirebaseAuthService(), fenix: true);
-  Get.lazyPut(() => FirestoreService(), fenix: true);
-  
-  Get.lazyPut(() => AuthRepository(
-    authService: Get.find(),
-    firestoreService: Get.find(),
-  ), fenix: true);
+  @override
+  void dependencies() {
+    // 1. Services
+    Get.lazyPut(() => FirebaseAuthService(), fenix: true);
+    Get.lazyPut(() => FirestoreService(), fenix: true);
+    
+    // 2. Repositories (Must be before Controllers)
+    Get.lazyPut(() => AuthRepository(
+      authService: Get.find<FirebaseAuthService>(),
+      firestoreService: Get.find<FirestoreService>(),
+    ), fenix: true);
 
-  // Force AuthController to stay in memory forever
-  Get.put(
-    AuthController(authRepository: Get.find()),
-    permanent: true,
-  );
+    // ADD THIS LINE - It was missing!
+    Get.lazyPut(() => PostRepository(
+      firestoreService: Get.find<FirestoreService>(),
+    ), fenix: true);
 
-  Get.lazyPut(() => PostController(postRepository: Get.find()), fenix: true);
-}
+    // 3. Controllers
+    // permanent: true ensures AuthController isn't deleted on navigation 
+    Get.put(
+      AuthController(authRepository: Get.find<AuthRepository>()),
+      permanent: true,
+    );
 
+    Get.lazyPut(() => PostController(
+      postRepository: Get.find<PostRepository>(),
+    ), fenix: true);
+  }
 }
