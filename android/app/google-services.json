@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "796467449596",
+    "project_id": "socio-8c362",
+    "storage_bucket": "socio-8c362.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796467449596:android:121d7a6bf1706b0f879179",
+        "android_client_info": {
+          "package_name": "com.example.socio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "796467449596-a5hgcnpnasgn45n1nhppbrtkligjmr7k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.socio",
+            "certificate_hash": "07d01cd20dcea18c5cab0d9348ff02dce8479377"
+          }
+        },
+        {
+          "client_id": "796467449596-dbblts65kkbi89f85aa0cargas2rluj0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEXKGufolK0scD6KzW-avzzQ1NS_9trbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "796467449596-dbblts65kkbi89f85aa0cargas2rluj0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "796467449596-faueqrasqftkc36nq808ebpt1ugg4k1f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.miniSocial"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
