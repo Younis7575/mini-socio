@@ -24,8 +24,7 @@ void _setupAuthListener() {
     _authRepository.authStateChanges.listen((firebaseUser) async {
       debugPrint("Auth State Changed: ${firebaseUser?.email ?? 'No user'}");
       
-      if (firebaseUser != null) {
-        // Fetch the user data from Firestore
+      if (firebaseUser != null) { 
         final userEntity = await _authRepository.getUser(firebaseUser.uid);
         
         if (userEntity != null) {
@@ -38,10 +37,7 @@ void _setupAuthListener() {
           );
           
           currentUser.value = userModel;
-          debugPrint("User data synced to AuthController: ${userModel.displayName}");
-          
-          // FIX: Instead of checking if we are on '/login', we force move to '/feed'
-          // This ensures that even if GetX thinks the route name is different, the app moves.
+          debugPrint("User data synced to AuthController: ${userModel.displayName}"); 
           if (Get.currentRoute != '/feed') {
              debugPrint("Redirecting to Feed Page...");
              Get.offAllNamed('/feed');
@@ -49,28 +45,22 @@ void _setupAuthListener() {
         }
       } else {
         currentUser.value = null;
-        debugPrint("User signed out.");
-        // Only redirect to login if we aren't already there
+        debugPrint("User signed out."); 
         if (Get.currentRoute != '/login') {
           Get.offAllNamed('/login');
         }
       }
     });
   }
- 
-
-// Add this method inside your AuthController class
+  
 Future<void> updateDisplayName(String newName) async {
   try {
     if (newName.trim().isEmpty) return;
     isLoading.value = true;
 
     final user = currentUser.value;
-    if (user != null) {
-      // 1. Update Firestore [cite: 12]
-      await _authRepository.updateUserDisplayName(user.uid, newName);
-
-      // 2. Update local state
+    if (user != null) { 
+      await _authRepository.updateUserDisplayName(user.uid, newName); 
       currentUser.value = UserModel(
         uid: user.uid,
         displayName: newName,
@@ -103,8 +93,7 @@ Future<void> signInWithGoogle() async {
         createdAt: userEntity.createdAt,
       );
       
-      debugPrint("Manual login successful. Forcing navigation to feed...");
-      // DO NOT wait for the listener here, navigate immediately
+      debugPrint("Manual login successful. Forcing navigation to feed..."); 
       Get.offAllNamed('/feed'); 
     }
   } catch (e) {
@@ -121,7 +110,7 @@ Future<void> signInWithGoogle() async {
     try {
       isLoading.value = true;
       await _authRepository.signOut();
-      currentUser.value = null; // Immediate local update
+      currentUser.value = null; 
       debugPrint("Sign out successful");
     } catch (e) {
       debugPrint("Sign out error: $e");

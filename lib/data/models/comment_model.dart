@@ -6,6 +6,7 @@ class CommentModel {
   final String userName;
   final String text;
   final DateTime timestamp;
+  final String? userPhotoUrl;
 
   CommentModel({
     required this.id,
@@ -13,6 +14,7 @@ class CommentModel {
     required this.userName,
     required this.text,
     required this.timestamp,
+    required this.userPhotoUrl,
   });
 
   Map<String, dynamic> toMap() {
@@ -21,6 +23,7 @@ class CommentModel {
       'userName': userName,
       'text': text,
       'timestamp': timestamp,
+      'userPhotoUrl': userPhotoUrl,
     };
   }
 
@@ -30,6 +33,7 @@ class CommentModel {
       userId: map['userId'] ?? '',
       userName: map['userName'] ?? 'Anonymous',
       text: map['text'] ?? '',
+      userPhotoUrl: map['userPhotoUrl'],
       timestamp: (map['timestamp'] as Timestamp).toDate(),
     );
   }

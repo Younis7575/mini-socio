@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mini_social/app/bindings/app_bindings.dart';
 import 'package:mini_social/app/routes/app_pages.dart';
-import 'package:mini_social/app/theme/app_theme.dart';
-import 'package:mini_social/data/repositories/post_repository.dart';
+import 'package:mini_social/app/theme/app_theme.dart'; 
 import 'firebase_options.dart'; 
 
 void main() async {

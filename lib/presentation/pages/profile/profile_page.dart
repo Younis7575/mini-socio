@@ -21,7 +21,7 @@ class ProfilePage extends StatelessWidget {
         ),
         backgroundColor: Colors.black,
       ),
-      backgroundColor: const Color(0xFF121212), // Match your dark theme
+      backgroundColor: const Color(0xFF121212),  
       body: Obx(() {
         final user = _authController.currentUser.value;
 

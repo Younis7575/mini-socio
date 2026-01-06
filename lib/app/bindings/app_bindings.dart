@@ -1,4 +1,3 @@
-// lib/app/bindings/app_bindings.dart
 import 'package:get/get.dart';
 import 'package:mini_social/data/repositories/auth_repository.dart';
 import 'package:mini_social/data/repositories/post_repository.dart';

@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:mini_social/presentation/pages/auth/login_page.dart';
 import 'package:mini_social/presentation/pages/feed/feed_page.dart';

@@ -40,16 +40,14 @@ class PostModel implements PostEntity {
       'userDisplayName': userDisplayName,
       'userPhotoUrl': userPhotoUrl,
       'imageUrl': imageUrl,
-      'caption': caption,
-      // Sending FieldValue.serverTimestamp() is better for database accuracy
+      'caption': caption, 
       'timestamp': timestamp, 
       'likes': likes,
       'commentCount': commentCount,
     };
   }
 
-  factory PostModel.fromMap(String id, Map<String, dynamic> map) {
-    // Handle both ISO Strings and Firestore Timestamps
+  factory PostModel.fromMap(String id, Map<String, dynamic> map) { 
     DateTime parsedTime;
     if (map['timestamp'] is Timestamp) {
       parsedTime = (map['timestamp'] as Timestamp).toDate();

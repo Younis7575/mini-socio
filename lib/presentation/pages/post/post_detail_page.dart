@@ -1,22 +1,20 @@
- 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mini_social/app/theme/app_colors.dart';
 import 'package:mini_social/app/theme/app_text_styles.dart';
-import 'package:mini_social/app/theme/paints/paint_rectangle.dart'; 
+import 'package:mini_social/app/theme/paints/paint_rectangle.dart';
 import 'package:mini_social/data/models/post_model.dart';
 import 'package:mini_social/presentation/controllers/post_controller.dart';
 
- 
 import 'package:mini_social/presentation/pages/feed/feed_page.dart';
 
 class PostDetailPage extends StatelessWidget {
   final PostModel post;
   final PostController _controller = Get.find();
 
-  PostDetailPage({super.key, required this.post}) { 
+  PostDetailPage({super.key, required this.post}) {
     _controller.loadComments(post.id);
   }
 
@@ -27,14 +25,9 @@ class PostDetailPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: CustomColors.cardBackground,
         elevation: 0,
-        title: Text(
-          'Post Details',
-          style: CustomTextStyles.appBarTitle,
-        ),
+        title: Text('Post Details', style: CustomTextStyles.appBarTitle),
         centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: CustomColors.primaryText,
-        ),
+        iconTheme: const IconThemeData(color: CustomColors.primaryText),
       ),
       body: Column(
         children: [
@@ -43,9 +36,8 @@ class PostDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Displays the post at the top using your existing PostCard 
-                  PostCard(post: post), 
-                  
+                  PostCard(post: post),
+
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                     child: Text(
@@ -53,13 +45,9 @@ class PostDetailPage extends StatelessWidget {
                       style: CustomTextStyles.sectionHeader,
                     ),
                   ),
-                  
-                  Divider(
-                    color: CustomColors.divider,
-                    thickness: 1,
-                  ),
 
-                  // Obx listens to currentPostComments in PostController 
+                  Divider(color: CustomColors.divider, thickness: 1),
+
                   Obx(() {
                     if (_controller.currentPostComments.isEmpty) {
                       return Center(
@@ -84,39 +72,49 @@ class PostDetailPage extends StatelessWidget {
                           child: CustomPaint(
                             painter: PaintRectangle(),
                             child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                              
-                              child: ListTile(
-                                leading:   CircleAvatar(
-                      radius: 24,
-                      backgroundColor: CustomColors.primaryAccent.withOpacity(0.2),
-                      backgroundImage: post.userPhotoUrl != null
-                          ? CachedNetworkImageProvider(post.userPhotoUrl!)
-                          : null,
-                      child: post.userPhotoUrl == null
-                          ? Text(
-                              post.userDisplayName.isNotEmpty
-                                  ? post.userDisplayName[0].toUpperCase()
-                                  : "?",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.primaryAccent,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 4,
                               ),
-                            )
-                          : null,
-                    ),
+
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: CustomColors.primaryAccent
+                                      .withOpacity(0.2),
+                                  backgroundImage: comment.userPhotoUrl != null
+                                      ? CachedNetworkImageProvider(
+                                          comment.userPhotoUrl!,
+                                        )
+                                      : null,
+                                  child: comment.userPhotoUrl == null
+                                      ? Text(
+                                          post.userDisplayName.isNotEmpty
+                                              ? post.userDisplayName[0]
+                                                    .toUpperCase()
+                                              : "?",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: CustomColors.iconPrimary,
+                                          ),
+                                        )
+                                      : null,
+                                ),
                                 title: Text(
                                   comment.userName.toString(),
-                                  style: CustomTextStyles.commentUsername.copyWith(
-                                    color: CustomColors.iconPrimary,
-                                  ),
+                                  style: CustomTextStyles.commentUsername
+                                      .copyWith(
+                                        color: CustomColors.iconPrimary,
+                                      ),
                                 ),
                                 subtitle: Text(
                                   comment.text,
                                   style: CustomTextStyles.commentText,
                                 ),
                                 trailing: Text(
-                                  DateFormat('h:mm a').format(comment.timestamp),
+                                  DateFormat(
+                                    'h:mm a',
+                                  ).format(comment.timestamp),
                                   style: CustomTextStyles.commentTimestamp,
                                 ),
                                 contentPadding: const EdgeInsets.symmetric(
@@ -133,9 +131,8 @@ class PostDetailPage extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-          
-          // Fixed Comment Input Field at bottom 
+          ), 
+
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
@@ -173,16 +170,15 @@ class PostDetailPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  // Triggers the submitComment method in PostController 
+                  const SizedBox(width: 8), 
                   CircleAvatar(
                     backgroundColor: CustomColors.primaryButton,
                     radius: 22,
                     child: IconButton(
                       icon: Icon(
-                        Icons.send, 
-                        color: CustomColors.primaryText, 
-                        size: 20
+                        Icons.send,
+                        color: CustomColors.primaryText,
+                        size: 20,
                       ),
                       onPressed: () => _controller.submitComment(post.id),
                       padding: EdgeInsets.zero,

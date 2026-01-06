@@ -21,12 +21,10 @@ class AuthRepository implements AuthRepositoryInterface {
   Future<UserEntity?> signInWithGoogle() async {
     final user = await _authService.signInWithGoogle();
     
-    if (user != null) {
-      // 1. Check if the user already exists in our Firestore database
+    if (user != null) { 
       final existingUser = await _firestoreService.getUser(user.uid);
       
-      if (existingUser == null) {
-        // 2. If NEW user, create the model and SAVE to Firestore
+      if (existingUser == null) { 
         final newUser = UserModel(
           uid: user.uid,
           displayName: user.displayName ?? 'Anonymous',
@@ -36,9 +34,8 @@ class AuthRepository implements AuthRepositoryInterface {
         );
         
         await _firestoreService.createUser(newUser);
-        return newUser; // UserModel implements UserEntity
-      } else {
-        // 3. If EXISTING user, return the data we found in Firestore
+        return newUser;  
+      } else { 
         return existingUser;
       }
     }
@@ -60,8 +57,7 @@ class AuthRepository implements AuthRepositoryInterface {
   User? get currentUser => _authService.currentUser;
 
   @override
-  Future<UserEntity?> getUser(String uid) async {
-    // This returns UserModel which implements UserEntity
+  Future<UserEntity?> getUser(String uid) async { 
     return await _firestoreService.getUser(uid);
   }
 }

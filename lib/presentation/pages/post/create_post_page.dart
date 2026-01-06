@@ -183,8 +183,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
     return Scaffold(
       backgroundColor: CustomColors.primaryBackground,
       body: CustomScrollView(
-        slivers: [
-    // Custom App Bar
+        slivers: [ 
 SliverAppBar(
   expandedHeight: 120,
   floating: true,
@@ -200,7 +199,7 @@ SliverAppBar(
         ),
       ),
       child: Container(
-        color: Colors.black.withOpacity(0.3), // Dark overlay for better readability
+        color: Colors.black.withOpacity(0.3),  
         child: Padding(
           padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
           child: FadeInDown(
@@ -238,13 +237,11 @@ SliverAppBar(
   ],
 ),
 
-
-          // Content
+ 
           SliverPadding(
             padding: const EdgeInsets.all(20),
             sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                // Image Selection Area
+              delegate: SliverChildListDelegate([ 
                 FadeInUp(
                   duration: const Duration(milliseconds: 800),
                   child: Column(
@@ -271,8 +268,7 @@ SliverAppBar(
                                           width: double.infinity,
                                           height: double.infinity,
                                         ),
-                                      ),
-                                      // Glass Overlay
+                                      ), 
                                       Positioned(
                                         bottom: 0,
                                         left: 0,
@@ -294,8 +290,7 @@ SliverAppBar(
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      // Change Image Button
+                                      ), 
                                       Positioned(
                                         bottom: 20,
                                         right: 20,
@@ -348,8 +343,7 @@ SliverAppBar(
                         ),
                       ),
                       const SizedBox(height: 30),
-
-                      // Caption Input
+ 
                       FadeInUp(
                         duration: const Duration(milliseconds: 1000),
                         delay: const Duration(milliseconds: 200),
@@ -401,8 +395,7 @@ SliverAppBar(
                       ),
 
                       const SizedBox(height: 30),
-
-                      // Post Button
+ 
                       FadeInUp(
                         duration: const Duration(milliseconds: 1200),
                         child: Obx(() {
@@ -464,8 +457,7 @@ SliverAppBar(
                       ),
 
                       const SizedBox(height: 20),
-
-                      // Preview Section
+ 
                       if (_selectedImage != null)
                         FadeInUp(
                           duration: const Duration(milliseconds: 1400),

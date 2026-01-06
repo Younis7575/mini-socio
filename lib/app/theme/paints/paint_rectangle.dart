@@ -4,27 +4,28 @@ import 'package:flutter/material.dart';
 class PaintRectangle extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Path path = Path();
-    path.moveTo(size.width * 0.9358930, size.height * 0.005813953);
-    path.lineTo(size.width * 0.9969136, size.height * 0.1301818);
-    path.lineTo(size.width * 0.9969136, size.height * 0.9941860);
-    path.lineTo(size.width * 0.05828436, size.height * 0.9941860);
-    path.lineTo(size.width * 0.003086420, size.height * 0.8297093);
-    path.lineTo(size.width * 0.003086420, size.height * 0.005813953);
-    path.lineTo(size.width * 0.9358930, size.height * 0.005813953);
-    path.close();
+    Path path_0 = Path();
+    path_0.moveTo(size.width * 0.9357400, size.height * 0.002500000);
+    path_0.lineTo(size.width * 0.9987500, size.height * 0.1260500);
+    path_0.lineTo(size.width * 0.9987500, size.height * 0.9975000);
+    path_0.lineTo(size.width * 0.06426025, size.height * 0.9975000);
+    path_0.lineTo(size.width * 0.001250000, size.height * 0.8739450);
+    path_0.lineTo(size.width * 0.001250000, size.height * 0.002500000);
+    path_0.lineTo(size.width * 0.9357400, size.height * 0.002500000);
+    path_0.close();
 
+    // 🔹 Thin Stroke
     Paint paintStroke = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = size.width * 0.0020 // 🔽 thinner line
-      ..color = const ui.Color.fromARGB(255, 255, 254, 254)
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round
-      ..isAntiAlias = true;
+      ..strokeWidth = 0.5 // 👈 reduced thickness
+      ..isAntiAlias = true
+      ..color = Colors.white;
 
-    canvas.drawPath(path, paintStroke);
+    canvas.drawPath(path_0, paintStroke);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
 }

@@ -1,22 +1,20 @@
-// lib/app/theme/custom_colors.dart
+
 import 'package:flutter/material.dart';
 
-class CustomColors {
-  // Background Colors
-  static const Color primaryBackground = Color(0xFF000000); // Black background
+class CustomColors { 
+  static const Color primaryBackground = Color(0xFF000000);  
   static const Color secondaryBackground = Color(0xFF121212);
   static const Color cardBackground = Color(0xFF1E1E1E);
-  
-  // Gradient Colors
+   
   static const List<Color> loginGradient = [
-    Color.fromARGB(255, 11, 25, 58), // Dark blue
-    Color.fromARGB(255, 25, 19, 34), // Dark purple
-    Color.fromARGB(255, 19, 7, 20), // Dark pink
+    Color.fromARGB(255, 11, 25, 58),  
+    Color.fromARGB(255, 25, 19, 34),  
+    Color.fromARGB(255, 19, 7, 20),  
   ];
   
   static const List<Color> feedGradient = [
-    Color.fromARGB(255, 0, 0, 0), // Dark blue
-    Color.fromARGB(255, 15, 15, 15), // Dark purple
+    Color.fromARGB(255, 0, 0, 0),  
+    Color.fromARGB(255, 15, 15, 15),  
   ];
   
   static const List<Color> glassGradient = [
@@ -28,12 +26,11 @@ class CustomColors {
     Color.fromRGBO(255, 255, 255, 0.25),
     Color.fromRGBO(255, 255, 255, 0.1),
   ];
-  
-  // Accent Colors
-  static const Color primaryAccent = Color.fromARGB(255, 22, 22, 22); // Muted blue
-  static const Color secondaryAccent = Color.fromARGB(255, 0, 0, 0); // Purple accent
-  static const Color accentPink = Color(0xFFE91E63); // Pink accent
-  static const Color accentCyan = Color(0xFF00BCD4); // Cyan accent
+   
+  static const Color primaryAccent = Color.fromARGB(255, 22, 22, 22);  
+  static const Color secondaryAccent = Color.fromARGB(255, 0, 0, 0);  
+  static const Color accentPink = Color(0xFFE91E63);  
+  static const Color accentCyan = Color(0xFF00BCD4);  
   
   // Text Colors
   static const Color primaryText = Colors.white;

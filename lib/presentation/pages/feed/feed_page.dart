@@ -14,213 +14,268 @@ import 'package:animate_do/animate_do.dart';
 import 'package:mini_social/presentation/pages/post/post_detail_page.dart';
 import 'package:mini_social/presentation/pages/profile/profile_page.dart';
 
+ 
+
 class FeedPage extends StatelessWidget {
   final PostController _postController = Get.find();
   final AuthController _authController = Get.find();
+  final ScrollController _scrollController = ScrollController();
 
-  FeedPage({super.key});
+  FeedPage({super.key}) {
+    // Setup scroll listener for infinite scroll
+    _scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      // Load more when 200px from bottom
+      _postController.loadMorePosts();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.primaryBackground,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 180,
-            floating: true,
-            pinned: true,
-            backgroundColor: CustomColors.primaryBackground,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.person, color: Colors.white),
-                onPressed: () {
-                  debugPrint("Navigating to Profile...");
-                  Get.to(() => ProfilePage());
-                },
-              ),
-              IconButton(
-                onPressed: () => _authController.signOut(),
-                icon: const Icon(Icons.logout, color: Colors.white),
-                tooltip: 'Sign out',
-              ),
-            ],
-            flexibleSpace: FlexibleSpaceBar(
-              background: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color.fromARGB(255, 0, 0, 0),
-                      Color.fromARGB(255, 19, 19, 20),
-                    ],
-                  ),
+      body: RefreshIndicator(
+        onRefresh: () => _postController.refreshPosts(),
+        backgroundColor: CustomColors.primaryBackground,
+        color: CustomColors.primaryAccent,
+        child: CustomScrollView(
+          controller: _scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            SliverAppBar(
+              expandedHeight: 180,
+              floating: true,
+              pinned: true,
+              backgroundColor: CustomColors.primaryBackground,
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.person, color: Colors.white),
+                  onPressed: () {
+                    debugPrint("Navigating to Profile...");
+                    Get.to(() => ProfilePage());
+                  },
                 ),
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: const DecorationImage(
-                            image: AssetImage('assets/images/pattern.jpg'),
-                            fit: BoxFit.cover,
-                            opacity: 0.1,
+                IconButton(
+                  onPressed: () => _authController.signOut(),
+                  icon: const Icon(Icons.logout, color: Colors.white),
+                  tooltip: 'Sign out',
+                ),
+              ],
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color.fromARGB(255, 0, 0, 0),
+                        Color.fromARGB(255, 19, 19, 20),
+                      ],
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: const DecorationImage(
+                              image: AssetImage('assets/images/pattern.jpg'),
+                              fit: BoxFit.cover,
+                              opacity: 0.1,
+                            ),
+                            color: Colors.black.withOpacity(0.3),
                           ),
-                          color: Colors.black.withOpacity(0.3),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 60,
-                        left: 20,
-                        right: 20,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          FadeInDown(
-                            duration: const Duration(milliseconds: 800),
-                            child: const Text(
-                              'Social Feed',
-                              style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                letterSpacing: 1.2,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          FadeInDown(
-                            duration: const Duration(milliseconds: 1000),
-                            delay: const Duration(milliseconds: 200),
-                            child: const Text(
-                              'Share your moments with friends',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Color(0xFFB0B0B0),
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          FadeInUp(
-                            duration: const Duration(milliseconds: 1000),
-                            child: Row(
-                              children: [
-                                const CircleAvatar(
-                                  radius: 22,
-                                  backgroundColor: Color.fromRGBO(
-                                    255,
-                                    255,
-                                    255,
-                                    0.1,
-                                  ),
-                                  child: Icon(Icons.add, color: Colors.white),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 60,
+                          left: 20,
+                          right: 20,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            FadeInDown(
+                              duration: const Duration(milliseconds: 800),
+                              child: const Text(
+                                'Social Feed',
+                                style: TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  letterSpacing: 1.2,
                                 ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 12,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            FadeInDown(
+                              duration: const Duration(milliseconds: 1000),
+                              delay: const Duration(milliseconds: 200),
+                              child: const Text(
+                                'Share your moments with friends',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFFB0B0B0),
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            FadeInUp(
+                              duration: const Duration(milliseconds: 1000),
+                              child: Row(
+                                children: [
+                                  const CircleAvatar(
+                                    radius: 22,
+                                    backgroundColor: Color.fromRGBO(
+                                      255,
+                                      255,
+                                      255,
+                                      0.1,
                                     ),
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromRGBO(
-                                        255,
-                                        255,
-                                        255,
-                                        0.1,
+                                    child: Icon(Icons.add, color: Colors.white),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 12,
                                       ),
-                                      borderRadius: BorderRadius.circular(30),
-                                      border: Border.all(
-                                        color: const Color(0xFF444444),
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(
+                                          255,
+                                          255,
+                                          255,
+                                          0.1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(30),
+                                        border: Border.all(
+                                          color: const Color(0xFF444444),
+                                        ),
                                       ),
-                                    ),
-                                    child: GestureDetector(
-                                      onTap: () => Get.toNamed('/create-post'),
-                                      child: Text(
-                                        "What's on your mind?",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: const Color(
-                                            0xFFB0B0B0,
-                                          ).withOpacity(0.8),
+                                      child: GestureDetector(
+                                        onTap: () => Get.toNamed('/create-post'),
+                                        child: Text(
+                                          "What's on your mind?",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: const Color(
+                                              0xFFB0B0B0,
+                                            ).withOpacity(0.8),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Obx(() {
+              if (_postController.isLoading.value && _postController.posts.isEmpty) {
+                return const SliverToBoxAdapter(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+
+              if (_postController.posts.isEmpty) {
+                return SliverFillRemaining(
+                  child: FadeIn(
+                    duration: const Duration(milliseconds: 800),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElasticIn(
+                            duration: const Duration(milliseconds: 1500),
+                            child: Container(
+                              padding: const EdgeInsets.all(30),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    CustomColors.primaryAccent.withOpacity(0.3),
+                                    CustomColors.secondaryAccent.withOpacity(0.3),
+                                ],
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.photo_library_outlined,
+                                size: 70,
+                                color: CustomColors.primaryAccent,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          Text(
+                            'No posts yet',
+                            style: CustomTextStyles.emptyStateTitle,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            'Be the first to share a moment!',
+                            style: CustomTextStyles.emptyStateSubtitle,
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Obx(() {
-            if (_postController.posts.isEmpty) {
-              return SliverFillRemaining(
-                child: FadeIn(
-                  duration: const Duration(milliseconds: 800),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElasticIn(
-                          duration: const Duration(milliseconds: 1500),
-                          child: Container(
-                            padding: const EdgeInsets.all(30),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                colors: [
-                                  CustomColors.primaryAccent.withOpacity(0.3),
-                                  CustomColors.secondaryAccent.withOpacity(0.3),
-                                ],
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.photo_library_outlined,
-                              size: 70,
-                              color: CustomColors.primaryAccent,
-                            ),
+                  ),
+                );
+              }
+
+              return SliverList(
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  if (index < _postController.posts.length) {
+                    final post = _postController.posts[index];
+                    return FadeInUp(
+                      duration: const Duration(milliseconds: 500),
+                      delay: Duration(milliseconds: index * 100),
+                      child: PostCard(post: post),
+                    );
+                  } else if (_postController.hasMore.value) { 
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            CustomColors.primaryAccent,
                           ),
                         ),
-                        const SizedBox(height: 30),
-                        Text(
-                          'No posts yet',
-                          style: CustomTextStyles.emptyStateTitle,
+                      ),
+                    );
+                  } else {
+                    // End of list
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Center(
+                        child: Text(
+                          'No more posts',
+                          style: TextStyle(color: Colors.white70),
                         ),
-                        const SizedBox(height: 10),
-                        Text(
-                          'Be the first to share a moment!',
-                          style: CustomTextStyles.emptyStateSubtitle,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                      ),
+                    );
+                  }
+                }, childCount: _postController.posts.length + 
+                    (_postController.hasMore.value ? 1 : 1)),
               );
-            }
-            return SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                final post = _postController.posts[index];
-                return FadeInUp(
-                  duration: const Duration(milliseconds: 500),
-                  delay: Duration(milliseconds: index * 100),
-                  child: PostCard(post: post),
-                );
-              }, childCount: _postController.posts.length),
-            );
-          }),
-        ],
+            }),
+          ],
+        ),
       ),
       floatingActionButton: Bounce(
         duration: const Duration(seconds: 2),
@@ -239,8 +294,10 @@ class FeedPage extends StatelessWidget {
       ),
     );
   }
-}
 
+  
+}
+ 
 class PostCard extends StatelessWidget {
   final PostModel post;
   final PostController _postController = Get.find();

@@ -1,5 +1,7 @@
+ 
 import 'dart:convert';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image/image.dart' as img;
 import 'package:mini_social/data/models/comment_model.dart';
 import 'package:mini_social/data/models/post_model.dart';
@@ -52,31 +54,57 @@ class PostRepository implements PostRepositoryInterface {
   }
 
   @override
+  Stream<PostsResult> getPostsStream({
+    DocumentSnapshot? startAfter,
+    int limit = 10,
+  }) async* { 
+    var query = FirebaseFirestore.instance
+        .collection('posts')
+        .orderBy('timestamp', descending: true)
+        .limit(limit);
+ 
+    if (startAfter != null) {
+      query = query.startAfterDocument(startAfter);
+    }
+ 
+    await for (final snapshot in query.snapshots()) {
+      final posts = snapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return PostModel(
+          id: doc.id,
+          userId: data['userId'],
+          userDisplayName: data['userDisplayName'],
+          userPhotoUrl: data['userPhotoUrl'],
+          imageUrl: data['imageUrl'],
+          caption: data['caption'],
+          timestamp: (data['timestamp'] as Timestamp).toDate(),
+          likes: List<String>.from(data['likes'] ?? []),
+          commentCount: data['commentCount'] ?? 0,
+        ) as PostEntity;
+      }).toList();
+
+      final lastDocument = snapshot.docs.isNotEmpty 
+          ? snapshot.docs.last 
+          : null;
+      
+      final hasMore = posts.length == limit;
+
+      yield PostsResult(
+        posts: posts,
+        lastDocument: lastDocument,
+        hasMore: hasMore,
+      );
+    }
+  }
+
+  @override
   Stream<List<CommentModel>> getCommentsStream(String postId) {
     return _firestoreService.getCommentsStream(postId);
   }
 
   @override
-  Stream<List<PostEntity>> getPostsStream() {
-    return _firestoreService.getPostsStream().map(
-      (List<PostModel> posts) {
-        return posts.map((post) => post as PostEntity).toList();
-      },
-    );
-  }
-
-  @override
   Future<void> likePost(String postId, String userId) async {
-    final post = await _firestoreService.getPost(postId);
-    if (post != null) {
-      final likes = List<String>.from(post.likes);
-      if (likes.contains(userId)) {
-        likes.remove(userId);
-      } else {
-        likes.add(userId);
-      }
-      await _firestoreService.updatePost(postId, {'likes': likes});
-    }
+    await _firestoreService.likePost(postId, userId);
   }
 
   @override

@@ -17,7 +17,7 @@ class PaintCard extends CustomPainter {
 
     Paint paintStroke = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = size.width * 0.0020 // 🔽 thinner stroke
+      ..strokeWidth = 0.5 // 🔽 thinner stroke
       ..color = const ui.Color.fromARGB(255, 255, 255, 255)
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round

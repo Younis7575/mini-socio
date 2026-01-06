@@ -1,9 +1,8 @@
-// lib/app/theme/custom_text_styles.dart
+
 import 'package:flutter/material.dart';
 import 'package:mini_social/app/theme/app_colors.dart';
 
-class CustomTextStyles {
-  // Login Page Styles
+class CustomTextStyles { 
   static const TextStyle loginTitle = TextStyle(
     fontSize: 36,
     fontWeight: FontWeight.w800,

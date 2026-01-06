@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            // Background Animated Circles
+            
             ..._buildAnimatedCircles(size),
             
             Center(
@@ -254,25 +254,7 @@ class LoginPage extends StatelessWidget {
     return Pulse(
       infinite: true,
       duration: const Duration(seconds: 2),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          gradient: LinearGradient(
-            colors: CustomColors.glassWhite(0.3),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: CustomColors.overlayLight,
-              blurRadius: 10,
-              spreadRadius: 2,
-            ),
-            BoxShadow(
-              color: CustomColors.shadow,
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
+      child: Container( 
         child: InkWell(
           onTap: _authController.signInWithGoogle,
           borderRadius: BorderRadius.circular(20),
@@ -281,7 +263,7 @@ class LoginPage extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 30,
-                vertical: 18,
+                vertical: 2,
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
